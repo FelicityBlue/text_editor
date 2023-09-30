@@ -22,6 +22,12 @@ def cut():
 def paste():
     text_area.event_generate("<<Paste>>")
 
+def undo():
+    print("undo")
+
+def redo():
+    print("redo")
+
 def create_new_file():
     window.title("Untitled")
     # delete the text
@@ -57,7 +63,7 @@ def save_file():
             file.close()
 
 def about():
-    showinfo("About", "This is a simple text editor written in Python by FelicityBlue.")
+    print("About")
 
 def exit():
     window.destroy()
@@ -120,7 +126,7 @@ font_style.set("normal")
 font_color = StringVar(window)
 font_color.set("black")
 
-text_area = Text(window, font=(font_name.get(), font_size.get(), font_style.get()), fg=font_color.get())
+text_area = Text(window, font=(font_name.get(), font_size.get(), font_style.get()), fg=font_color.get(), undo=True)
 set_mode(mode)
 text_area.grid(padx=5, pady=5)
 
@@ -134,7 +140,6 @@ frame = Frame(window)
 frame.grid()
 
 # change font
-
 button_font = OptionMenu(frame, font_name, *font.families(), command=change_font)
 button_font.grid(row=0, column=0)
 
@@ -142,11 +147,12 @@ button_color = Button(frame, text="font color", command=change_font_color)
 button_color.grid(row=0, column=1)
 
 button_style = OptionMenu(frame, font_style, "normal", "bold", "italic", "underline", command=change_font)
-button_style.grid(row=0, column=2)
+button_style.grid(row=1, column=1)
 
 button_size = Spinbox(frame, from_= 8, to_= 100, textvariable= font_size, command = change_font)
 button_size.grid(row=1, column=0)
 
+# menu bar
 menu_bar = Menu(window)
 window.config(menu=menu_bar)
 
@@ -160,6 +166,9 @@ file_menu.add_command(label="Exit", command=exit)
 
 edit_menu = Menu(menu_bar, tearoff=0)
 menu_bar.add_cascade(label="Edit", menu=edit_menu)
+edit_menu.add_command(label="Undo", command=undo())
+edit_menu.add_command(label="Redo", command=redo())
+edit_menu.add_separator()
 edit_menu.add_command(label="Copy", command=copy)
 edit_menu.add_command(label="Cut", command=cut)
 edit_menu.add_command(label="Paste", command=paste)
@@ -175,7 +184,8 @@ palette_menu.add_command(label= "barbie", command = lambda:[mode.set("barbie"), 
 
 about_menu = Menu(menu_bar, tearoff=0)
 menu_bar.add_cascade(label="Help", menu=about_menu)
-about_menu.add_command(label="About Us")
+about_menu.add_command(label="About Us", command=about())
+
 
 scroll_bar.pack(side=RIGHT, fill=Y)
 scroll_bar.config(command=text_area.yview)
