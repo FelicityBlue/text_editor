@@ -190,4 +190,5 @@ about_menu.add_command(label="About Us", command=about())
 scroll_bar.pack(side=RIGHT, fill=Y)
 scroll_bar.config(command=text_area.yview)
 
-window.mainloop()
+if __name__ == "__main__":
+    window.mainloop()
